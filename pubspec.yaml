@@ -1,0 +1,28 @@
+# name: myapp
+name: group_alarm_app
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0' # Updated to a stable Dart SDK range
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  # Updated Firebase package versions to allow for newer, compatible releases.
+  # These versions are chosen to be the latest stable major versions to ensure
+  # compatibility with the underlying Firebase SDKs.
+  firebase_core: ^3.0.0 # Allows versions >=3.0.0 and <4.0.0
+  firebase_auth: ^5.0.0 # Allows versions >=5.0.0 and <6.0.0
+  cloud_firestore: ^5.0.0 # Allows versions >=5.0.0 and <6.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^5.0.0 # FIX: Downgraded to ^5.0.0 to resolve SDK compatibility issue
+  mocktail: ^1.0.0
