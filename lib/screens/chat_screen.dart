@@ -1,3 +1,5 @@
+// lib/screens/chat_screen.dart
+
 import 'package:flutter/material.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -7,10 +9,24 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chat'),
+        title: const Text('AI Assistant Chat'),
       ),
       body: const Center(
-        child: Text('Chat Screen (Placeholder)'),
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'This is the Chat Screen (Placeholder)',
+                style: TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              Text('AI chat interface will be implemented here.'),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -35,9 +35,9 @@ class SegmentedButtonState extends State<SegmentedButton> {
                     ? Theme.of(context).colorScheme.primary
                     : Colors.grey[200],
                 borderRadius: BorderRadius.horizontal(
-                  left: index == 0 ? Radius.circular(8.0) : Radius.zero,
+                  left: index == 0 ? const Radius.circular(8.0) : Radius.zero,
                   right: index == widget.segments.length - 1
-                      ? Radius.circular(8.0)
+                      ? const Radius.circular(8.0)
                       : Radius.zero,
                 ),
                 border: Border.all(

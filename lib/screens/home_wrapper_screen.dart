@@ -1,30 +1,28 @@
+// lib/screens/home_wrapper_screen.dart
+
 import 'package:flutter/material.dart';
-import 'home_screen.dart';
-import 'add_screen.dart';
-import 'discover_screen.dart';
-import 'chat_screen.dart';
+import 'package:group_alarm_app/screens/home_screen.dart';
+import 'package:group_alarm_app/screens/add_screen.dart';
+import 'package:group_alarm_app/screens/discover_screen.dart';
+import 'package:group_alarm_app/screens/chat_screen.dart';
 
 class HomeWrapperScreen extends StatefulWidget {
   const HomeWrapperScreen({super.key});
 
   @override
-  // Fix: Changed _HomeWrapperScreenState to HomeWrapperScreenState
-  HomeWrapperScreenState createState() => HomeWrapperScreenState();
+  State<HomeWrapperScreen> createState() => _HomeWrapperScreenState();
 }
 
+class _HomeWrapperScreenState extends State<HomeWrapperScreen> {
+  int _selectedIndex = 0;
 
-class HomeWrapperScreenState extends State<HomeWrapperScreen> {
-  int _selectedIndex = 0; // Tracks the currently selected tab index
-
-  // List of screens corresponding to each tab in the BottomNavigationBar
-  static final List<Widget> _screens = <Widget>[
-    const HomeScreen(),
-    const AddScreen(),
-    const DiscoverScreen(),
-    const ChatScreen(),
+  static const List<Widget> _widgetOptions = <Widget>[
+    HomeScreen(),
+    AddScreen(),
+    DiscoverScreen(),
+    ChatScreen(),
   ];
 
-  // Function to handle tab selection
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -34,12 +32,8 @@ class HomeWrapperScreenState extends State<HomeWrapperScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // The body displays the selected screen from the _screens list.
-      // IndexedStack keeps the state of each screen when switching tabs,
-      // which is more efficient than rebuilding them every time.
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens,
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -60,13 +54,11 @@ class HomeWrapperScreenState extends State<HomeWrapperScreen> {
             label: 'Chat',
           ),
         ],
-        currentIndex: _selectedIndex, // The currently selected item
-        selectedItemColor: Theme.of(context).colorScheme.primary, // Vibrant accent color
-        unselectedItemColor: Colors.grey, // Default color for unselected items
-        onTap: _onItemTapped, // Callback when a tab is tapped
-        type: BottomNavigationBarType.fixed, // Ensures all items are visible
-        backgroundColor: Theme.of(context).cardColor, // Background color for the bar
-        elevation: 10, // Shadow effect
+        currentIndex: _selectedIndex,
+        selectedItemColor: Theme.of(context).colorScheme.secondary, // Vibrant accent
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed, // Ensures labels are always visible
       ),
     );
   }

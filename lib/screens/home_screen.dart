@@ -1,3 +1,5 @@
+// lib/screens/home_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,60 +8,36 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  HomeScreenState createState() => HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class HomeScreenState extends State<HomeScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  User? _currentUser;
-  String _userName = 'Guest'; // Default name
+class _HomeScreenState extends State<HomeScreen> {
+  String _userName = 'User'; // Default value
 
   @override
   void initState() {
     super.initState();
-    _currentUser = _auth.currentUser;
-    if (_currentUser != null) {
-      _fetchAndListenForUserName();
-    }
+    _fetchUserName();
   }
 
-  void _fetchAndListenForUserName() {
-    _firestore
-        .collection('users')
-        .doc(_currentUser!.uid)
-        .snapshots()
-        .listen((snapshot) {
-      if (snapshot.exists) {
-        final userData = snapshot.data();
-        if (userData != null && userData.containsKey('name')) {
+  void _fetchUserName() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      FirebaseFirestore.instance.collection('users').doc(user.uid).snapshots().listen((snapshot) {
+        if (snapshot.exists && snapshot.data() != null) {
           setState(() {
-            _userName = userData['name'];
+            _userName = snapshot.data()!['name'] ?? 'User';
           });
-        } else {
-          // Fallback to display name if name field is missing in Firestore
-          if (_currentUser!.displayName != null && _currentUser!.displayName!.isNotEmpty) {
-             setState(() {
-              _userName = _currentUser!.displayName!;
-            });
-          }
         }
-      } else {
-         // If user document doesn't exist, fallback to display name
-         if (_currentUser!.displayName != null && _currentUser!.displayName!.isNotEmpty) {
-             setState(() {
-              _userName = _currentUser!.displayName!;
-            });
-          }
-      }
-    });
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: const Text('Home'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -68,26 +46,28 @@ class HomeScreenState extends State<HomeScreen> {
           children: [
             Text(
               'Welcome, $_userName!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-            Text(
+            const Text(
               'Your Alarms:',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 10),
-            // Placeholder for created alarms
+            // Placeholder for alarm cards
             Expanded(
               child: Center(
-                child: Text(
-                  'Alarm list will appear here',
-                  style: TextStyle(fontStyle: FontStyle.italic),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.alarm, size: 60, color: Colors.grey[300]),
+                    const SizedBox(height: 10),
+                    Text(
+                      'No alarms set yet. Go to "Add" to create one!',
+                      style: TextStyle(color: Colors.grey[600]),
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
             ),

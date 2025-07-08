@@ -5,40 +5,24 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
 
-import 'package:group_alarm_app/main.dart';
-
-class MockFirebaseAuth extends Mock implements FirebaseAuth {}
+import 'package:group_alarm_app/main.dart'; // Your main app entry point
 
 void main() {
-  late MockFirebaseAuth mockFirebaseAuth;
-
-  setUpAll(() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
- when(() => Firebase.initializeApp()).thenAnswer((_) async => throw Exception());
-    mockFirebaseAuth = MockFirebaseAuth();
-    when(() => mockFirebaseAuth.currentUser).thenReturn(null);
-    when(() => FirebaseAuth.instance).thenReturn(mockFirebaseAuth);
-  });
-
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('App starts and shows initial screen', (WidgetTester tester) async {
     // Build our app and trigger a frame.
+    // This will now attempt to initialize real Firebase services.
     await tester.pumpWidget(const MyApp());
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // Verify that the CircularProgressIndicator is shown during Firebase initialization
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // You would then typically pump frames until the app settles,
+    // and then verify the presence of the LoginScreen or HomeWrapperScreen.
+    // For example:
+    // await tester.pumpAndSettle(); // Wait for all animations and futures to complete
+    // expect(find.byType(LoginScreen), findsOneWidget); // Or HomeWrapperScreen
   });
 }

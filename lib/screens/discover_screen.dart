@@ -1,3 +1,5 @@
+// lib/screens/discover_screen.dart
+
 import 'package:flutter/material.dart';
 
 class DiscoverScreen extends StatelessWidget {
@@ -7,10 +9,24 @@ class DiscoverScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Discover'),
+        title: const Text('Discover Alarms'),
       ),
       body: const Center(
-        child: Text('Discover Screen - Placeholder'),
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'This is the Discover Screen (Placeholder)',
+                style: TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              Text('Alarm tabs (All, Upcoming, Past) and list will go here.'),
+            ],
+          ),
+        ),
       ),
     );
   }
